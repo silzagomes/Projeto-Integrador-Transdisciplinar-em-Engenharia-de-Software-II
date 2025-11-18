@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block main_class %}container-checkout{% endblock %}
+
+{% block content %}
+    <h2>{{ titulo }}</h2>
+    
+    <div class="checkout-box">
+      <form action="{{ url_for('concluir_compra') }}" method="POST">
+        
+        <h3>1. Dados de Entrega</h3>
+        {# Pré-preenche se o cliente estiver logado #}
+        <input type="text" name="nome" placeholder="Seu Nome Completo" value="{{ cliente.nome if cliente else '' }}" required>
+        <input type="email" name="email" placeholder="Seu Email" value="{{ cliente.email if cliente else '' }}" required>
+        <input type="text" name="endereco" placeholder="Endereço Completo" required>
+        <input type="tel" name="telefone" placeholder="Telefone" required>
+        
+        <br>
+        
+        <h3>2. Pagamento</h3>
+        <select name="tipo_pagamento" required>
+          <option value="">Selecione a Forma de Pagamento</option>
+          <option value="CartaoCredito">Cartão de Crédito</option>
+          <option value="Pix">Pix</option>
+        </select>
+        
+        <div class="resumo-final">
+          <p>Total a Pagar: **R$ {{ "%.2f" | format(total) | replace('.', ',') }}**</p>
+        </div>
+
+        <button type="submit" class="btn-concluir">Concluir Venda</button>
+
+      </form>
+    </div>
+{% endblock %}

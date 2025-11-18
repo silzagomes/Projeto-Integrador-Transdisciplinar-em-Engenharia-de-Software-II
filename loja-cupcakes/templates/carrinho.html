@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block main_class %}container{% endblock %}
+
+{% block content %}
+    <h2>{{ titulo }}</h2>
+
+    {% if mensagem %}
+        <div class="alert {{ mensagem.tipo }}">
+            {{ mensagem.texto }}
+        </div>
+    {% endif %}
+
+    {% if not cart %}
+      <div class="alert erro" style="width: 50%; margin: 20px auto;">
+        Seu carrinho está vazio. Volte à <a href="{{ url_for('listar_produtos') }}">loja</a>!
+      </div>
+    {% else %}
+      <div class="carrinho-lista">
+        {% for item in cart %}
+          <div class="item-carrinho">
+            <img src="{{ url_for('static', filename=item.imagemUrl) }}" alt="{{ item.nome }}">
+            <div class="detalhes">
+              <h3>{{ item.nome }}</h3>
+              <p>Preço unitário: R$ {{ "%.2f" | format(item.preco) | replace('.', ',') }}</p>
+              <p>Quantidade: {{ item.quantidade }}</p>
+            </div>
+            <div class="subtotal">
+              Subtotal: R$ {{ "%.2f" | format(item.preco * item.quantidade) | replace('.', ',') }}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="resumo-carrinho">
+        <h3>Resumo do Pedido</h3>
+        <p>Total de itens: {{ cart | length }}</p>
+        <p class="total">Total a Pagar: R$ {{ "%.2f" | format(total) | replace('.', ',') }}</p>
+        
+        <a href="{{ url_for('iniciar_checkout') }}" class="btn-checkout">Finalizar Compra</a>
+        <a href="{{ url_for('listar_produtos') }}" class="btn-continuar">Continuar Comprando</a>
+      </div>
+    {% endif %}
+{% endblock %}

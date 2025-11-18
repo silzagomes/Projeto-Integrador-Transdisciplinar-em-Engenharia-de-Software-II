@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block main_class %}container{% endblock %}
+
+{% block content %}
+    <style>
+      /* Estilos específicos para a conclusão */
+      .conclusao-box {
+          background-color: #fff9f9; padding: 40px; border-radius: 10px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); text-align: center;
+          max-width: 500px; margin: 50px auto; border: 1px solid #f06292;
+      }
+      .conclusao-box h2 { color: #e91e63; margin-bottom: 20px; font-size: 2em; }
+      .concluido { color: #4CAF50; font-size: 3em; margin-bottom: 20px; }
+    </style>
+    
+    <div class="conclusao-box">
+        <div class="concluido">✔️</div>
+        <h2>{{ titulo }}</h2>
+        
+        <p>Agradecemos a preferência! Seu pedido foi registrado e será enviado para o endereço cadastrado.</p>
+        
+        <p>Total Pago: **R$ {{ "%.2f" | format(total) | replace('.', ',') }}**</p>
+        <p>Data do Pedido: {{ data_pedido }}</p>
+
+        <a href="{{ url_for('listar_produtos') }}" class="btn-continuar">Voltar para a Loja</a>
+    </div>
+{% endblock %}

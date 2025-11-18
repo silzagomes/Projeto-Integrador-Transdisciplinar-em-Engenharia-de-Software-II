@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block main_class %}container{% endblock %}
+
+{% block content %}
+    <h2>{{ titulo }}</h2>
+
+    {% if mensagem %}
+        <div class="alert {{ mensagem.tipo }}">
+            {{ mensagem.texto }}
+        </div>
+    {% endif %}
+
+    <div class="produtos-grid">
+      {% for produto in produtos %}
+        <div class="card-produto">
+          {# Usamos url_for e o atributo imagemUrl do objeto Produto #}
+          <img src="{{ url_for('static', filename=produto.imagemUrl) }}" alt="{{ produto.nome }}">
+          <h3>{{ produto.nome }}</h3>
+          <p>{{ produto.descricao }}</p>
+          {# Filtro Jinja para formatar o preço #}
+          <div class="preco">R$ {{ "%.2f" | format(produto.preco) | replace('.', ',') }}</div> 
+          
+          <form action="{{ url_for('adicionar_item') }}" method="POST" class="add-to-cart-form">
+            <input type="hidden" name="id_produto" value="{{ produto.id_produto }}">
+            <input type="number" name="quantidade" value="1" min="1" required>
+            <button type="submit">Adicionar ao Carrinho</button>
+          </form>
+        </div>
+      {% endfor %}
+    </div>
+{% endblock %}

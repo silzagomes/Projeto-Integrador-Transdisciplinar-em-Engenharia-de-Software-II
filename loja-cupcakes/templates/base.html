@@ -1,0 +1,45 @@
+{# loja-cupcakes/templates/base.html #}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ titulo }}</title>
+  {# CORREÇÃO: Removido o .txt do CSS #}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <header>
+    <h1>🧁 Loja de Cupcakes</h1>
+    <p>O sabor que faz seu dia mais feliz!</p>
+    <nav class="main-nav">
+      <a href="{{ url_for('listar_produtos') }}">Produtos</a>
+      {# 'cart' é injetado globalmente e | length calcula o número de itens #}
+      <a href="{{ url_for('ver_carrinho') }}">Meu Carrinho ({{ cart | length }})</a> 
+      
+      {# LÓGICA DO USUÁRIO LOGADO #}
+      {% if cliente %}
+        <span class="welcome-msg">Olá, {{ cliente.nome }}!</span>
+        <a href="{{ url_for('logout') }}">Logout</a>
+      {% else %}
+        <a href="{{ url_for('cadastro') }}">Cadastre-se</a>
+        <a href="{{ url_for('login') }}">Login</a> 
+      {% endif %}
+    </nav>
+  </header>
+
+  <main class="{% block main_class %}{% endblock %}">
+    
+    {% block content %}
+    {# Conteúdo específico de cada página entra aqui #}
+    {% endblock %}
+    
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Loja de Cupcakes - Backend Python/Flask</p>
+  </footer>
+
+</body>
+</html>
